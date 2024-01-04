@@ -2,12 +2,14 @@ package com.progettoweb.webmeditrackbackend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 
 @SpringBootApplication
+@ServletComponentScan
 public class WebMediTrackBackendApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(WebMediTrackBackendApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(WebMediTrackBackendApplication.class, args);
+    }
 
 }
