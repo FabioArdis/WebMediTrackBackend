@@ -19,8 +19,10 @@ public class LoginServlet extends HttpServlet {
     {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
+
         User user = DBManager.getInstance().getUserDAO().findByPrimaryKey(username);
         boolean authorized;
+
         if (user == null)
         {
             System.out.println("You are not authorized.");

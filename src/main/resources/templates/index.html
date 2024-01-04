@@ -8,6 +8,10 @@
 
 <header>
     <h1>MediTrack</h1>
+    <div th:if="${user != null}">
+        Benvenuto <span th:text="${user.name}"> <span th:text="${user.surname}"></span></span>
+
+    </div>
 </header>
 
 <main>
