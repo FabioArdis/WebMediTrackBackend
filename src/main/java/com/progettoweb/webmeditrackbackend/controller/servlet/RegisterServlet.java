@@ -3,18 +3,15 @@ package com.progettoweb.webmeditrackbackend.controller.servlet;
 import com.progettoweb.webmeditrackbackend.persistence.DBManager;
 import com.progettoweb.webmeditrackbackend.persistence.model.Doctor;
 import com.progettoweb.webmeditrackbackend.persistence.model.Patient;
-import com.progettoweb.webmeditrackbackend.persistence.model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Enumeration;
+
 
 @WebServlet("/doRegister")
 public class RegisterServlet extends HttpServlet {

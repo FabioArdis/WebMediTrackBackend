@@ -84,14 +84,14 @@ public class PatientDAOPostgres implements UserDAO<Patient> {
                 patient.setCf(rs.getString("cf"));
                 patient.setTScode(rs.getString("ts_code"));
 
-                String docQuery = "SELECT patient_username FROM users.doctor_patients WHERE doctor_username = ?";
+                String docQuery = "SELECT doctor_username FROM users.doctor_patients WHERE patient_username = ?";
                 PreparedStatement docSt = con.prepareStatement(docQuery);
                 docSt.setString(1, patient.getUsername());
                 ResultSet patRs = docSt.executeQuery();
 
                 while (patRs.next())
                 {
-                    patient.addDoctor(DBManager.getInstance().getDoctorDAO().findByPrimaryKey(rs.getString("username")));
+                    patient.addDoctorUsername(patRs.getString("doctor_username"));
                 }
             }
         } catch (SQLException e) {
@@ -153,6 +153,8 @@ public class PatientDAOPostgres implements UserDAO<Patient> {
                 st.setString(8, patient.getUsername());
 
                 st.executeUpdate();
+
+                patient.loadDoctorsDetails();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }

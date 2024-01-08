@@ -97,7 +97,7 @@ public class DoctorDAOPostgres implements UserDAO<Doctor> {
 
                 while (patRs.next())
                 {
-                    doctor.addPatient(DBManager.getInstance().getPatientDAO().findByPrimaryKey(rs.getString("username")));
+                    doctor.addPatientUsername(patRs.getString("patient_username"));
                 }
             }
         } catch (SQLException e) {
@@ -118,8 +118,8 @@ public class DoctorDAOPostgres implements UserDAO<Doctor> {
             {
                 st = con.prepareStatement(saveStr);
                 st.setString(1, doctor.getUsername());
-                st.setString(2, doctor.getEmail());
-                st.setString(3, doctor.getPassword());
+                st.setString(2, doctor.getPassword());
+                st.setString(3, doctor.getEmail());
                 st.setString(4, doctor.getName());
                 st.setString(5, doctor.getSurname());
 
@@ -139,11 +139,11 @@ public class DoctorDAOPostgres implements UserDAO<Doctor> {
                     + "password = ?, "
                     + "name = ?, "
                     + "surname = ?, "
-                    + "birthDate = ?"
-                    + "cf = ?"
-                    + "doctorid = ?"
-                    + "spec = ?"
-                    + "docavailtime = ?"
+                    + "birthDate = ?, "
+                    + "cf = ?, "
+                    + "doctorid = ?, "
+                    + "spec = ?, "
+                    + "docavailtime = ? "
                     + "WHERE username = ?";
 
             PreparedStatement st;
@@ -165,6 +165,8 @@ public class DoctorDAOPostgres implements UserDAO<Doctor> {
                 st.setString(10, doctor.getUsername());
 
                 st.executeUpdate();
+
+                doctor.loadPatientsDetail();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
