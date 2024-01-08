@@ -1,6 +1,8 @@
 package com.progettoweb.webmeditrackbackend.controller.servlet;
 
 import com.progettoweb.webmeditrackbackend.persistence.DBManager;
+import com.progettoweb.webmeditrackbackend.persistence.model.Doctor;
+import com.progettoweb.webmeditrackbackend.persistence.model.Patient;
 import com.progettoweb.webmeditrackbackend.persistence.model.User;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -19,34 +21,71 @@ public class LoginServlet extends HttpServlet {
     {
         String username = req.getParameter("username");
         String password = req.getParameter("password");
+        String userType = req.getParameter("userType");
 
-        User user = DBManager.getInstance().getUserDAO().findByPrimaryKey(username);
-        boolean authorized;
-
-        if (user == null)
+        switch (userType)
         {
-            System.out.println("You are not authorized.");
-            authorized = false;
-        } else {
-            System.out.println("User " + user.getUsername() + " found.");
-            if (password.equals(user.getPassword()))
+            case "doctor" ->
             {
-                System.out.println("Password matching.");
-                authorized = true;
+                Doctor doctor = DBManager.getInstance().getDoctorDAO().findByPrimaryKey(username);
+                boolean authorized;
 
-                HttpSession session = req.getSession();
-                System.out.println("Session ID: " + session.getId());
-                session.setAttribute("user", user);
-                resp.sendRedirect("/");
-            } else {
-                System.out.println("Password not matching.");
-                authorized = false;
+                if (doctor == null)
+                {
+                    System.out.println("Can't find user " + username);
+                    authorized = false;
+                } else {
+                    System.out.println("Doctor " + doctor.getFullName() + " (" + username +  ") found.");
+                    if (password.equals(doctor.getPassword()))
+                    {
+                        System.out.println("Passwords matching.");
+                        authorized = true;
+                        HttpSession session = req.getSession();
+                        System.out.println("Session ID: " + session.getId());
+                        session.setAttribute("user", doctor);
+                        resp.sendRedirect("/");
+                    } else {
+                        System.out.println("Passwords not matching.");
+                        authorized = false;
+                    }
+
+                    if (!authorized)
+                    {
+                        RequestDispatcher dispatcher = req.getRequestDispatcher("/views/noAuth.html");
+                        dispatcher.forward(req, resp);
+                    }
+                }
             }
-
-            if (!authorized)
+            case "patient" ->
             {
-                RequestDispatcher dispatcher = req.getRequestDispatcher("/views/noAuth.html");
-                dispatcher.forward(req, resp);
+                Patient patient = DBManager.getInstance().getPatientDAO().findByPrimaryKey(username);
+                boolean authorized;
+
+                if (patient == null)
+                {
+                    System.out.println("Can't find patient " + username);
+                    authorized = false;
+                } else {
+                    System.out.println("Patient " + patient.getFullName() + " (" + username +  ") found.");
+                    if (password.equals(patient.getPassword()))
+                    {
+                        System.out.println("Passwords matching.");
+                        authorized = true;
+                        HttpSession session = req.getSession();
+                        System.out.println("Session ID: " + session.getId());
+                        session.setAttribute("user", patient);
+                        resp.sendRedirect("/");
+                    } else {
+                        System.out.println("Passwords not matching.");
+                        authorized = false;
+                    }
+
+                    if (!authorized)
+                    {
+                        RequestDispatcher dispatcher = req.getRequestDispatcher("/views/noAuth.html");
+                        dispatcher.forward(req, resp);
+                    }
+                }
             }
         }
     }

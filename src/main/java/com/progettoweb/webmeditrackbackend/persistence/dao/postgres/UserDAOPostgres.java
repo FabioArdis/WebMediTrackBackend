@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class UserDAOPostgres implements UserDAO {
+public class UserDAOPostgres implements UserDAO<User> {
     Connection con;
 
     public UserDAOPostgres(Connection con) { this.con = con; }
@@ -17,7 +17,7 @@ public class UserDAOPostgres implements UserDAO {
     public List<User> findAll()
     {
         List<User> users = new ArrayList<User>();
-        String query = "SELECT * FROM users.admins";
+        String query = "SELECT * FROM users.admin";
         try
         {
             Statement st = con.createStatement();
@@ -34,6 +34,8 @@ public class UserDAOPostgres implements UserDAO {
 
                 long secs = rs.getDate("birthDate").getTime();
                 user.setBirthDate(new Date(secs));
+
+                users.add(user);
             }
         } catch (SQLException e)
         {
@@ -46,7 +48,7 @@ public class UserDAOPostgres implements UserDAO {
     public User findByPrimaryKey(String username)
     {
         User user = null;
-        String query = "SELECT * FROM users.admins WHERE username = ?";
+        String query = "SELECT * FROM users.admin WHERE username = ?";
 
         try
         {
@@ -78,7 +80,7 @@ public class UserDAOPostgres implements UserDAO {
     public void saveOrUpdate(User user) {
         if (findByPrimaryKey(user.getEmail()) == null)
         {
-            String saveStr = "INSERT INTO users.admins VALUES (?, ?, ?, ?, ?, ?)";
+            String saveStr = "INSERT INTO users.admin VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement st;
 
             try
@@ -98,7 +100,7 @@ public class UserDAOPostgres implements UserDAO {
                 throw new RuntimeException(e);
             }
         } else {
-            String updateStr = "UPDATE users.admins SET email = ?, "
+            String updateStr = "UPDATE users.admin SET email = ?, "
                     + "password = ?, "
                     + "name = ?, "
                     + "surname = ?, "
@@ -128,7 +130,7 @@ public class UserDAOPostgres implements UserDAO {
 
     @Override
     public void delete(User user) {
-        String query = "DELETE FROM users.admins WHERE username = ?";
+        String query = "DELETE FROM users.admin WHERE username = ?";
         try {
             PreparedStatement st = con.prepareStatement(query);
             st.setString(1, user.getUsername());

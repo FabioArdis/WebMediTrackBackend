@@ -1,15 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>MediTrack</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.0.4/popper.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
 
 <header>
     <h1>MediTrack</h1>
-    <div th:if="${user != null}">
-        Benvenuto <span th:text="${user.name}"> <span th:text="${user.surname}"></span></span>
+    <div th:if="${session.user}">
+        <p th:text="'Welcome, ' + ${session.user.getFullName()}">asd</p>
 
     </div>
 </header>
@@ -17,11 +23,17 @@
 <main>
     <section>
         <h2>Welcome to MediTrack</h2>
-        <p>Do you want to:</p>
-        <ul>
-            <li><a href="/login.html">Login</a></li>
-            <li><a href="/register.html">Register</a></li>
-        </ul>
+        <div  th:if="${session.user == null}">
+            <p>Do you want to:</p>
+                <a href="/register.html?user=doctor" class="btn btn-primary">Register as a doctor</a>
+                <a href="/register.html?user=patient" class="btn btn-primary">Register as a patient</a>
+                <a href="/login.html?user=doctor" class="btn btn-primary">Login as a doctor</a>
+                <a href="/login.html?user=patient" class="btn btn-primary">Login as a patient</a>
+        </div>
+        <div th:if="${session.user}">
+            <a href="/userInfo" class="btn btn-primary">Check user info</a>
+            <a href="/logout.html" class="btn btn-primary">Logout</a>
+        </div>
     </section>
 </main>
 

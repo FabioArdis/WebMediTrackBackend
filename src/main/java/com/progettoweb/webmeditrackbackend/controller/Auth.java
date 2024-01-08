@@ -59,11 +59,11 @@ public class Auth {
             String decoded = decode64(token);
             String username = decoded.split(":")[0];
             String password = decoded.split(":")[1];
-            User user = DBManager.getInstance().getUserDAO().findByPrimaryKey(username);
+            /*User user = DBManager.getInstance().getUserDAO().findByPrimaryKey(username);
 
             if (user != null)
                 if (user.getPassword().equals(password))
-                    return user;
+                    return user;*/
         }
 
         return null;

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User info</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.0.4/popper.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<header>
+    <h1>User info:</h1>
+    <div th:if="${session.user}">
+        <p th:if="${userType eq 'Doctor'}">Benvenuto Dottore!</p>
+        <p th:if="${userType eq 'Patient'}">Benvenuto Paziente!</p>
+        <p th:text="'Name: ' + ${session.user.getName()}"></p>
+        <p th:text="'Surname: ' + ${session.user.getSurname()}"></p>
+        <p th:text="'Username: ' + ${session.user.getUsername()}"></p>
+        <p th:text="'E-mail: ' + ${session.user.getEmail()}"></p>
+        <p th:text="'Birth Date: ' + ${session.user.getBirthDate()}"></p>
+        <p th:text="'Codice Fiscale: ' + ${session.user.getCf()}"></p>
+        <div th:if="${userType eq 'Doctor'}">
+            <p th:text="'Doctor ID: ' + ${session.user.getDoctorId()}"></p>
+            <p th:text="'Specialization: ' + ${session.user.getSpec()}"></p>
+            <p th:text="'Availability: ' + ${session.user.getDocAvailTime()}"></p>
+        </div>
+        <div th:if="${userType eq 'Patient'}">
+            <p th:text="'Tessera Sanitaria code: ' + ${session.user.getTScode()}"></p>
+        </div>
+    </div>
+</header>
+
+<main>
+    <a href="/" class="btn btn-primary">Home</a>
+</main>
+
+</body>
+</html>

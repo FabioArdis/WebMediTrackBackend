@@ -15,6 +15,7 @@ public class User {
     public String getPassword() { return password; }
     public String getName() { return name; }
     public String getSurname() { return surname; }
+    public String getFullName() { return name + " " + surname; }
     public Date getBirthDate() { return birthDate; }
 
     public void setUsername(String username) { this.username = username; }

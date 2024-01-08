@@ -4,9 +4,9 @@ import com.progettoweb.webmeditrackbackend.persistence.model.User;
 
 import java.util.List;
 
-public interface UserDAO {
-    public List<User> findAll();
-    public User findByPrimaryKey(String username);
-    public void saveOrUpdate(User user);
-    public void delete(User user);
+public interface UserDAO<T> {
+    public List<T> findAll();
+    public T findByPrimaryKey(String username);
+    public void saveOrUpdate(T user);
+    public void delete(T user);
 }
