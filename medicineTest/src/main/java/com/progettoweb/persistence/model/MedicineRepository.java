@@ -10,7 +10,7 @@ public interface MedicineRepository extends JpaRepository<Medicine, Integer> {
     @Query("SELECT m FROM Medicine m WHERE m.name = :name")
     List<Medicine> findByName(@Param("name") String name);
 
-    @Query("SELECT m FROM Medicine m WHERE m.manufacture = :manufacture")
-    List<Medicine> findByManufacture(@Param("manufacture") String manufacture);
+    @Query("SELECT m FROM Medicine m WHERE m.manufacturer = :manufacturer")
+    List<Medicine> findByManufacture(@Param("manufacture") String manufacturer);
 
 }

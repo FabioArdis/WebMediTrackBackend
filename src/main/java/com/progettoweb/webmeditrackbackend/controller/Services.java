@@ -46,4 +46,7 @@ public class Services {
     {
         return "searchPatient";
     }
+
+    @GetMapping("/doSearchMeds")
+    public String searchMeds(Model model, HttpSession session) { return "searchMed"; }
 }

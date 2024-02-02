@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <p th:text="${session.user.getUsername()}"></p>
+    <title>Search Patient</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.0.4/popper.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<h1>Search Medicine</h1>
+<a href="/" class="btn btn-primary">Home</a>
+
+
+<form action="/doSearchMedicine" method="post" class="mb-4">
+    <div class="input-group">
+        <label for="name">Medicine</label><input type="text" class="form-control" id="name" name="name" placeholder="Insert medicine name" required>
+        <div class="input-group-append">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</form>
+
+<div th:if="${session.searchMedicineList != null}">
+    <div th:each="med : ${session.searchMedicineList}" th:id="|r${med.getId()}|" class="card">
+        <div class="card-body">
+            <div th:if="${med != null}">
+                <h2>Patient Details</h2>
+                <p th:text="'Id: ' + ${med.getId()}"></p>
+                <p th:text="'Name: ' + ${med.getName()}"></p>
+                <form action="/addMedicine" method="post">
+                    <button type="submit" class="btn btn-success">Add medicine</button>
+                </form>
+                <form action="/removeMedicine" method="post">
+                    <button type="submit" class="btn btn-danger">Remove medicine</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</body>
+</html>

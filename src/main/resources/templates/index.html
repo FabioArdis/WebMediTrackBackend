@@ -32,6 +32,7 @@
         </div>
         <div th:if="${session.user}">
             <a href="/doSearchPatient" class="btn btn-primary"  th:if="${session.userType eq 'doctor'}">Search Patient</a>
+            <a href="/doSearchMeds" class="btn btn-primary"  th:if="${session.userType eq 'doctor'}">Search Medicine</a>
             <a href="/userInfo" class="btn btn-primary">Check user info</a>
             <a href="/doLogout" class="btn btn-primary">Logout</a>
         </div>

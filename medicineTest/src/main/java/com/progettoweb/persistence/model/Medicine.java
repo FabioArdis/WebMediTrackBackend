@@ -15,8 +15,8 @@ public class Medicine {
     private String name;
     @Column(name = "dosage")
     private int dosage;
-    @Column(name = "manufacture")
-    private String manufacture;
+    @Column(name = "manufacturer")
+    private String manufacturer;
     @Column(name = "batchNumber")
     private int batchNumber;
     @Column(name = "expirationTime")
@@ -48,12 +48,12 @@ public class Medicine {
         this.dosage = dosage;
     }
 
-    public String getManufacture() {
-        return manufacture;
+    public String getManufacturer() {
+        return manufacturer;
     }
 
-    public void setManufacture(String manufacture) {
-        this.manufacture = manufacture;
+    public void setManufacture(String manufacturer) {
+        this.manufacturer = manufacturer;
     }
 
     public int getBatchNumber() {
