@@ -26,19 +26,23 @@
     </div>
 </form>
 
-<div th:if="${session.searchMedicineList != null}">
-    <div th:each="med : ${session.searchMedicineList}" th:id="|r${med.getId()}|" class="card">
+<div class="d-flex flex-wrap" th:if="${session.searchMedicineList != null}">
+    <div th:each="med : ${session.searchMedicineList}" th:id="|r${med.getId()}|" class="card mb-3 mr-2" style="max-width: 300px;">
         <div class="card-body">
             <div th:if="${med != null}">
-                <h2>Patient Details</h2>
+                <h2>Medicine Details</h2>
                 <p th:text="'Id: ' + ${med.getId()}"></p>
                 <p th:text="'Name: ' + ${med.getName()}"></p>
-                <form action="/addMedicine" method="post">
-                    <button type="submit" class="btn btn-success">Add medicine</button>
-                </form>
-                <form action="/removeMedicine" method="post">
-                    <button type="submit" class="btn btn-danger">Remove medicine</button>
-                </form>
+                <p th:text="'Dosage: ' + ${med.getDosage()}"></p>
+
+                <div class="d-flex flex-wrap">
+                    <form action="/addMedicine" method="post">
+                        <button type="submit" class="btn btn-success mr-2">Add medicine</button>
+                    </form>
+                    <form action="/removeMedicine" method="post">
+                        <button type="submit" class="btn btn-danger">Remove medicine</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

@@ -93,6 +93,15 @@ public class PatientDAOPostgres implements UserDAO<Patient> {
                 {
                     patient.addDoctorUsername(patRs.getString("doctor_username"));
                 }
+
+                String planQuery = "SELECT plan_id FROM users.therapeutical_plans WHERE username = ?";
+                PreparedStatement planSt = con.prepareStatement(planQuery);
+                planSt.setString(1, patient.getUsername());
+                ResultSet planRs = planSt.executeQuery();
+                while (planRs.next())
+                {
+                    patient.addPlanId(planRs.getInt("plan_id"));
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -155,6 +164,7 @@ public class PatientDAOPostgres implements UserDAO<Patient> {
                 st.executeUpdate();
 
                 patient.loadDoctorsDetails();
+                patient.loadPlansDetails();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
