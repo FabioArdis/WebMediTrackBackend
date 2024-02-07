@@ -47,6 +47,16 @@ public class PlanDAOPostgres implements PlanDAO {
                 plan.setName(rs.getString("name"));
                 plan.setLength(rs.getInt("length"));
                 plan.setType(rs.getString("type"));
+
+                String medQuery = "SELECT medicine_id FROM plans.plansMedicines WHERE plan_id = ?";
+                PreparedStatement medSt = con.prepareStatement(medQuery);
+                medSt.setInt(1, plan.getId());
+                ResultSet medRs = medSt.executeQuery();
+
+                while (medRs.next())
+                {
+                    plan.addMedicineId(medRs.getInt("medicine_id"));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

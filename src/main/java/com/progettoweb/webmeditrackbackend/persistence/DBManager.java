@@ -45,5 +45,6 @@ public class DBManager {
     public AssociationDAO getDoctorPatientDAO() { return new DoctorPatientDAOPostgres(getConnection()); }
     public AssociationDAO getUserPlanDAO() { return new UserPlanDAOPostgres(getConnection()); }
     public PlanDAO getPlanDAO() { return new PlanDAOPostgres(getConnection()); }
+    public AssociationDAO getPlanMedicineDAO() { return new PlanMedicineDAOPostgres(getConnection()); }
 
 }

@@ -69,7 +69,10 @@ public class Patient extends User {
                 doctors.add(doc);
         }
     }
-    public void removePlan(Plan plan) { this.plansIds.remove(plansIds.indexOf(plan.getId())); this.plans.remove(plan);}
+    public void removePlan(Plan plan) {
+        this.plansIds.remove(plansIds.indexOf(plan.getId()));
+        if (this.plans != null)
+            this.plans.remove(plan);}
     public void addDoctor(Doctor doctor) { this.doctors.add(doctor); }
     public void removeDoctor(Doctor doctor) { this.doctors.remove(doctor); }
 
