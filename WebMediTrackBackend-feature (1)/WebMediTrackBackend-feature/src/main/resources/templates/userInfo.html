@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User info</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.0.4/popper.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+
+<h1>User info:</h1>
+<div th:if="${session.user}">
+    <p th:text="'Name: ' + ${session.user.getName()}"></p>
+    <p th:text="'Surname: ' + ${session.user.getSurname()}"></p>
+    <p th:text="'Username: ' + ${session.user.getUsername()}"></p>
+    <p th:text="'E-mail: ' + ${session.user.getEmail()}"></p>
+    <p th:text="'Birth Date: ' + ${session.user.getBirthDate()}"></p>
+    <p th:text="'Codice Fiscale: ' + ${session.user.getCf()}"></p>
+</div>
+<div th:if="${userType eq 'Doctor' and session.user != null}">
+    <p th:text="'Doctor ID: ' + ${session.user.getDoctorId()}"></p>
+    <p th:text="'Specialization: ' + ${session.user.getSpec()}"></p>
+    <p th:text="'Availability: ' + ${session.user.getDocAvailTime()}"></p>
+    <h1>List of patients:</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Username</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Codice Fiscale</th>
+            <th>Tessera Sanitaria code</th>
+        </tr>
+        </thead>
+        <tbody th:if="${userType eq 'Doctor'}">
+        <tr th:each="pat : ${session.user.getPatients()}" th:id="|r${pat.getUsername()}|">
+            <td th:text="${pat.getUsername()}"></td>
+            <td th:text="${pat.getName()}"></td>
+            <td th:text="${pat.getSurname()}"></td>
+            <td th:text="${pat.getCf()}"></td>
+            <td th:text="${pat.getTScode()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:if="${userType eq 'Patient' and session.user != null}">
+    <p th:text="'Tessera Sanitaria code: ' + ${session.user.getTScode()}"></p>
+    <h1>List of plans</h1>
+    <!--<table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Length</th>
+            <th>Type</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="plan : ${session.user.getPlans()}" th:id="|r${plan.getId()}|">
+            <td th:text="${plan.getName()}"></td>
+            <td th:text="${plan.getLength()}"></td>
+            <td th:text="${plan.getType()}"></td>
+        </tr>
+        </tbody>
+    </table>-->
+    <div th:if="${session.user.getPlans().isEmpty() != null}" class="d-flex flex-wrap">
+        <div th:each="plan : ${session.user.getPlans()}" th:id="|r${plan.getId()}|" class="card mb-3 mr-2" style="max-width: 300px;">
+            <div class="card-body">
+                <div th:if="${plan != null}">
+                    <p th:text="'Name: ' + ${plan.getName()}"></p>
+                    <p th:text="'Type: ' + ${plan.getType()}"></p>
+                    <p th:text="'Length: ' + ${plan.getLength()}"></p>
+
+                    <div class="d-flex flex-wrap">
+                        <form method="post" action="/editPlan">
+                            <input type="hidden" name="planId" th:value="${plan.getId()}"/>
+                            <button type="submit" class="btn btn-success mr-2">Modifica</button>
+                        </form>
+
+                        <form method="post" action="/removePlan">
+                            <input type="hidden" name="planId" th:value="${plan.getId()}"/>
+                            <button type="submit" class="btn btn-danger">Cancella</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h1>List of doctors:</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Username</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Specialization</th>
+            <th>Availability</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="doc : ${session.user.getDoctors()}" th:id="|r${doc.getUsername()}|">
+            <td th:text="${doc.getUsername()}"></td>
+            <td th:text="${doc.getName()}"></td>
+            <td th:text="${doc.getSurname()}"></td>
+            <td th:text="${doc.getSpec()}"></td>
+            <td th:text="${doc.getDocAvailTime()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<main>
+    <a href="/doUpdate" class="btn btn-primary">Update</a>
+    <a href="/" class="btn btn-primary">Home</a>
+</main>
+
+</body>
+</html>

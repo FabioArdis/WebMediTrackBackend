@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.0.4/popper.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div id="userTypeContent">
+
+</div>
+<form id="registrationForm" action="doRegister" method="post">
+    <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" class="form-control" placeholder="Enter username" id="username" name="username">
+    </div>
+    <div class="form-group">
+        <label for="pwd">Password:</label>
+        <input type="password" class="form-control" placeholder="Enter password" id="pwd" name="password">
+    </div>
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" class="form-control" placeholder="Enter email" id="email" name="email">
+    </div>
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" class="form-control" placeholder="Enter name" id="name" name="name">
+    </div>
+    <div class="form-group">
+        <label for="surname">Surname:</label>
+        <input type="text" class="form-control" placeholder="Enter surname" id="surname" name="surname">
+    </div>
+    <div class="form-group">
+        <label for="birthDate">Birth date:</label>
+        <input type="date" class="form-control" placeholder="Enter birth date" id="birthDate" name="birthDate">
+    </div>
+    <div class="form-group">
+        <label for="cf">Codice Fiscale:</label>
+        <input type="text" class="form-control" placeholder="Enter Codice Fiscale" id="cf" name="cf">
+    </div>
+    <div id="doctorFields" class="form-group" style="display:none;">
+        <label for="doctorId">Doctor ID:</label>
+        <input type="text" class="form-control" placeholder="Enter doctor ID" id="doctorId" name="doctorId">
+        <label for="spec">Specialization:</label>
+        <input type="text" class="form-control" placeholder="Enter specialization" id="spec" name="spec">
+        <label for="docAvailTime">Availability:</label>
+        <input type="text" class="form-control" placeholder="Enter doctor's availability" id="docAvailTime" name="docAvailTime">
+    </div>
+    <div id="patientFields" class="form-group" style="display:none;">
+        <label for="tsCode">Tessera Sanitaria code:</label>
+        <input type="text" class="form-control" placeholder="Enter Tessera Sanitaria code" id="tsCode" name="tsCode">
+    </div>
+
+    <input type="hidden" id="selectedUserType" name="selectedUserType" value="">
+
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
+<script src="js/register.js"></script>
+</body>
+</html>
