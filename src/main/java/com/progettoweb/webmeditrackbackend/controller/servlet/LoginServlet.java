@@ -3,6 +3,7 @@ package com.progettoweb.webmeditrackbackend.controller.servlet;
 import com.progettoweb.webmeditrackbackend.persistence.DBManager;
 import com.progettoweb.webmeditrackbackend.persistence.model.Doctor;
 import com.progettoweb.webmeditrackbackend.persistence.model.Patient;
+import com.progettoweb.webmeditrackbackend.persistence.model.Token;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,6 +13,7 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Base64;
 
 @WebServlet("/doLogin")
 public class LoginServlet extends HttpServlet {
@@ -74,15 +76,29 @@ public class LoginServlet extends HttpServlet {
                     out.println("</script>");
                 } else {
                     System.out.println("Patient " + patient.getFullName() + " (" + username +  ") found.");
+                    String concat = patient.getUsername() + ":" + patient.getPassword();
+                    String id = Base64.getEncoder().encodeToString(concat.getBytes());
+                    Token token = DBManager.getInstance().getTokenDAO().findByPrimaryKey(id);
                     if (password.equals(patient.getPassword()))
                     {
                         System.out.println("Passwords matching.");
-                        authorized = true;
-                        HttpSession session = req.getSession();
-                        System.out.println("Session ID: " + session.getId());
-                        session.setAttribute("user", patient);
-                        session.setAttribute("userType", "patient");
-                        resp.sendRedirect("/");
+                        if (token!= null && token.isAuthorized()){
+                            authorized = true;
+                            HttpSession session = req.getSession();
+                            System.out.println("Session ID: " + session.getId());
+                            session.setAttribute("user", patient);
+                            session.setAttribute("userType", "patient");
+                            resp.sendRedirect("/");
+                        }
+                        else{
+                            System.out.println("Patient's account not verified, please check the mailbox.");
+                            resp.setContentType("text/html");
+                            PrintWriter out = resp.getWriter();
+                            out.println("<script>");
+                            out.println("alert(\"Patient's account not verified, please check the mailbox.\");");
+                            out.println("window.location.href='/login.html?user=patient';");
+                            out.println("</script>");
+                            }
                     } else {
                         System.out.println("Passwords not matching.");
                         resp.setContentType("text/html");

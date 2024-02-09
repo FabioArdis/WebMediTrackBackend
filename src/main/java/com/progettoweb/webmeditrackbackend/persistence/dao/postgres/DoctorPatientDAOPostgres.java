@@ -69,4 +69,5 @@ public class DoctorPatientDAOPostgres implements AssociationDAO {
             }
         }
     }
+
 }

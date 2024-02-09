@@ -27,10 +27,9 @@
         </div>
     </div>
 </form>
-
-<div class="card">
+<div th:if="${session.patient != null}" class="d-flex flex-wrap">
+    <div class="card mb-3" style="max-width: 300px;">
     <div class="card-body">
-        <div th:if="${session.patient != null}">
             <h2>Patient Details</h2>
             <p th:text="'Username: ' + ${session.patient.getUsername()}"></p>
             <p th:text="'Name: ' + ${session.patient.getName()}"></p>
@@ -41,10 +40,9 @@
             <form action="/removePatient" method="post">
                 <button type="submit" class="btn btn-danger">Remove patient</button>
             </form>
-        </div>
     </div>
 </div>
-
+</div>
 
 
 
