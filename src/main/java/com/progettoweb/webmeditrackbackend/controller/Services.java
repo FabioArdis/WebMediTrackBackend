@@ -46,4 +46,10 @@ public class Services {
     {
         return "searchPatient";
     }
+
+    @GetMapping("/doSearchMeds")
+    public String searchMeds(Model model, HttpSession session) { return "searchMed"; }
+
+    @GetMapping("/goCreatePlan")
+    public String createPlan(Model model, HttpSession session) { return "createPlan"; }
 }
