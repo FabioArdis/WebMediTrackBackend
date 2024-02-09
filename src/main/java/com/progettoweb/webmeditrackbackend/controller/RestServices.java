@@ -26,6 +26,10 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -72,6 +76,7 @@ public class RestServices {
                     patient.setBirthDate(java.sql.Date.valueOf(requestBody.get("birthDate")));
                     patient.setCf(requestBody.get("cf"));
                     patient.setTScode(requestBody.get("tsCode"));
+
                     DBManager.getInstance().getPatientDAO().saveOrUpdate(patient);
                     System.out.println("Created patient " + patient.getUsername() + ".");
                     return patient;
@@ -373,6 +378,48 @@ public class RestServices {
             } else {
                 return new ResponseEntity<>("ERROR: Medicine already added.", HttpStatus.INTERNAL_SERVER_ERROR);
             }
+        } else {
+            return new ResponseEntity<>("ERROR: Can't find plan.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/update/plan/removeMedicine")
+    public ResponseEntity<String> removeMedicine(@RequestBody Map<String, String> requestBody) {
+        System.out.println("plan(" + requestBody.get("planId" ) + ") requesting to remove medicine(" + requestBody.get("medicineId") + ").");
+        Plan plan = DBManager.getInstance().getPlanDAO().findById(Integer.parseInt(requestBody.get("planId")));
+        if (plan != null)
+        {
+            if (DBManager.getInstance().getPlanMedicineDAO().ifExists(requestBody.get("planId"), requestBody.get("medicineId")))
+            {
+                DBManager.getInstance().getPlanMedicineDAO().removeAssociation(requestBody.get("planId"), requestBody.get("medicineId"));
+                plan.removeMedicineId(Integer.parseInt(requestBody.get("medicineId")));
+                try {
+                    plan.loadMedicinesDetail();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return new ResponseEntity<>("Medicine added.", HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>("ERROR: Medicine not found.", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            return new ResponseEntity<>("ERROR: Can't find plan.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/update/plan/data")
+    public ResponseEntity<String> updatePlanData(@RequestBody Map<String, String> requestBody) {
+        System.out.println("plan(" + requestBody.get("planId" ) + ") requesting to be updated");
+        Plan plan = DBManager.getInstance().getPlanDAO().findById(Integer.parseInt(requestBody.get("planId")));
+        if (plan != null)
+        {
+            plan.setName(requestBody.get("name"));
+            plan.setLength(Integer.parseInt(requestBody.get("length")));
+            plan.setType(requestBody.get("type"));
+            DBManager.getInstance().getPlanDAO().saveOrUpdate(plan);
+            return new ResponseEntity<>("Plan updated.", HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>("ERROR: Can't find plan.", HttpStatus.INTERNAL_SERVER_ERROR);
         }

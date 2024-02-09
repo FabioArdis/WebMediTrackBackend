@@ -48,5 +48,4 @@ public class DBManager {
     public PlanDAO getPlanDAO() { return new PlanDAOPostgres(getConnection()); }
     public AssociationDAO getPlanMedicineDAO() { return new PlanMedicineDAOPostgres(getConnection()); }
     public TokenDAO getTokenDAO() {return new TokenDAOPostgres(getConnection()); }
-
 }

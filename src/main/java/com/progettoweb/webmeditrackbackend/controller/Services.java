@@ -69,5 +69,6 @@ public class Services {
                 DBManager.getInstance().getTokenDAO().delete(userToken);
             }
         }
-        return "/index";}
+        return "/index";
+    }
 }
