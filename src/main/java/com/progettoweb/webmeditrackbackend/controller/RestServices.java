@@ -14,6 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -22,6 +25,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -420,4 +424,63 @@ public class RestServices {
             return new ResponseEntity<>("ERROR: Can't find plan.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/update/plan/removeMedicine")
+    public ResponseEntity<String> removeMedicine(@RequestBody Map<String, String> requestBody) {
+        System.out.println("plan(" + requestBody.get("planId" ) + ") requesting to remove medicine(" + requestBody.get("medicineId") + ").");
+        Plan plan = DBManager.getInstance().getPlanDAO().findById(Integer.parseInt(requestBody.get("planId")));
+        if (plan != null)
+        {
+            if (DBManager.getInstance().getPlanMedicineDAO().ifExists(requestBody.get("planId"), requestBody.get("medicineId")))
+            {
+                DBManager.getInstance().getPlanMedicineDAO().removeAssociation(requestBody.get("planId"), requestBody.get("medicineId"));
+                plan.removeMedicineId(Integer.parseInt(requestBody.get("medicineId")));
+                try {
+                    plan.loadMedicinesDetail();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return new ResponseEntity<>("Medicine added.", HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>("ERROR: Medicine not found.", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } else {
+            return new ResponseEntity<>("ERROR: Can't find plan.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/update/plan/data")
+    public ResponseEntity<String> updatePlanData(@RequestBody Map<String, String> requestBody) {
+        System.out.println("plan(" + requestBody.get("planId" ) + ") requesting to be updated");
+        Plan plan = DBManager.getInstance().getPlanDAO().findById(Integer.parseInt(requestBody.get("planId")));
+        if (plan != null)
+        {
+            plan.setName(requestBody.get("name"));
+            plan.setLength(Integer.parseInt(requestBody.get("length")));
+            plan.setType(requestBody.get("type"));
+            DBManager.getInstance().getPlanDAO().saveOrUpdate(plan);
+            return new ResponseEntity<>("Plan updated.", HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>("ERROR: Can't find plan.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @CrossOrigin(origins = "http://localhost:4200")
+    @PostMapping("/confirmRegistration")
+    public  ResponseEntity<String> confirmRegistration(@RequestParam String token){
+        Token userToken = DBManager.getInstance().getTokenDAO().findByPrimaryKey(token);
+        if (token != null) {
+            if (!userToken.isExpired()) {
+                userToken.setAuthorized(true);
+                DBManager.getInstance().getTokenDAO().saveOrUpdate(userToken);
+                return new ResponseEntity<>("Email confirmed", HttpStatus.OK);
+            } else {
+                DBManager.getInstance().getTokenDAO().delete(userToken);
+            }
+        }
+        return new ResponseEntity<>("ERROR: Confirmation token expired", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }

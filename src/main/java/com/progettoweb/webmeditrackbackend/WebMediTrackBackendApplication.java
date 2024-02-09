@@ -33,6 +33,7 @@ public class WebMediTrackBackendApplication {
                 registry.addMapping("/update/plan/addMedicine").allowedOrigins("http://localhost:4200").allowCredentials(true);
                 registry.addMapping("/update/plan/removeMedicine").allowedOrigins("http://localhost:4200").allowCredentials(true);
                 registry.addMapping("/update/plan/data").allowedOrigins("http://localhost:4200").allowCredentials(true);
+                registry.addMapping("/confirmRegistration").allowedOrigins("http://localhost:4200").allowCredentials(true);
             }
         };
     }

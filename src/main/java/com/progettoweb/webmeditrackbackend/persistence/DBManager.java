@@ -2,6 +2,7 @@ package com.progettoweb.webmeditrackbackend.persistence;
 
 import com.progettoweb.webmeditrackbackend.persistence.dao.AssociationDAO;
 import com.progettoweb.webmeditrackbackend.persistence.dao.PlanDAO;
+import com.progettoweb.webmeditrackbackend.persistence.dao.TokenDAO;
 import com.progettoweb.webmeditrackbackend.persistence.dao.UserDAO;
 import com.progettoweb.webmeditrackbackend.persistence.dao.postgres.*;
 import com.progettoweb.webmeditrackbackend.persistence.model.Doctor;
@@ -46,5 +47,5 @@ public class DBManager {
     public AssociationDAO getUserPlanDAO() { return new UserPlanDAOPostgres(getConnection()); }
     public PlanDAO getPlanDAO() { return new PlanDAOPostgres(getConnection()); }
     public AssociationDAO getPlanMedicineDAO() { return new PlanMedicineDAOPostgres(getConnection()); }
-
+    public TokenDAO getTokenDAO() {return new TokenDAOPostgres(getConnection()); }
 }
