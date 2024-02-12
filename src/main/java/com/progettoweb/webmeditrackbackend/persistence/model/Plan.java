@@ -67,7 +67,7 @@ public class Plan {
         if (medicinesIds == null)
             medicinesIds = new ArrayList<>();
 
-        this.medicinesIds.remove(id);
+        this.medicinesIds.remove(medicinesIds.indexOf(id));
     }
 
     public void loadMedicinesDetail() throws IOException {

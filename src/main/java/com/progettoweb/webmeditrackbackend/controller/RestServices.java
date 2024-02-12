@@ -399,7 +399,7 @@ public class RestServices {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                return new ResponseEntity<>("Medicine added.", HttpStatus.CREATED);
+                return new ResponseEntity<>("Medicine removed.", HttpStatus.CREATED);
             } else {
                 return new ResponseEntity<>("ERROR: Medicine not found.", HttpStatus.INTERNAL_SERVER_ERROR);
             }
